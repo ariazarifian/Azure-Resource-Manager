@@ -7,11 +7,8 @@
     {
       "type": "Microsoft.ContainerService/managedClusters",
       "apiVersion": "2021-10-01",
-      "name": "aks",
-      "location": "northeurope",
-      "tags": {
-        "hidden-DevOpsInfo:d2c7eaa3-7d70-4d8a-8661-706132b4802f_de2a9676-5205-49ac-be42-9891c64784fa_3;d2c7eaa3-7d70-4d8a-8661-706132b4802f_de2a9676-5205-49ac-be42-9891c64784fa_4;": ""
-      },
+      "name": "aks2",
+      "location": "centralus",
       "sku": {
         "name": "Basic",
         "tier": "Free"
@@ -21,7 +18,7 @@
       },
       "properties": {
         "kubernetesVersion": "1.21.7",
-        "dnsPrefix": "aks-dns",
+        "dnsPrefix": "aks2-dns",
         "agentPoolProfiles": [
           {
             "name": "agentpool",
@@ -30,6 +27,7 @@
             "osDiskSizeGB": 128,
             "osDiskType": "Managed",
             "kubeletDiskType": "OS",
+            "vnetSubnetID": "/subscriptions/62cba975-9596-4b65-a542-cf23fc36d81f/resourceGroups/iot/providers/Microsoft.Network/virtualNetworks/iot-vnet/subnets/default",
             "maxPods": 110,
             "type": "VirtualMachineScaleSets",
             "enableAutoScaling": false,
@@ -44,27 +42,34 @@
             "enableFIPS": false
           }
         ],
+        "windowsProfile": {
+          "adminUsername": "azureuser",
+          "enableCSIProxy": true
+        },
         "servicePrincipalProfile": {
           "clientId": "msi"
         },
         "addonProfiles": {
+          "azureKeyvaultSecretsProvider": {
+            "enabled": false
+          },
           "azurepolicy": {
             "enabled": false
           },
           "httpApplicationRouting": {
             "enabled": false
           },
-          "omsagent": {
+          "omsAgent": {
             "enabled": true,
             "config": {
-              "logAnalyticsWorkspaceResourceID": "/subscriptions/cfbe1138-2a80-4e50-8e6b-9dd686678389/resourceGroups/DefaultResourceGroup-NEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-cfbe1138-2a80-4e50-8e6b-9dd686678389-NEU"
+              "logAnalyticsWorkspaceResourceID": "/subscriptions/62cba975-9596-4b65-a542-cf23fc36d81f/resourceGroups/DefaultResourceGroup-PAR/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-62cba975-9596-4b65-a542-cf23fc36d81f-PAR"
             }
           }
         },
-        "nodeResourceGroup": "MC_iot_aks_northeurope",
+        "nodeResourceGroup": "MC_iot_aks2_centralus",
         "enableRBAC": true,
         "networkProfile": {
-          "networkPlugin": "kubenet",
+          "networkPlugin": "azure",
           "loadBalancerSku": "Standard",
           "loadBalancerProfile": {
             "managedOutboundIPs": {
@@ -72,11 +77,10 @@
             },
             "effectiveOutboundIPs": [
               {
-                "id": "/subscriptions/cfbe1138-2a80-4e50-8e6b-9dd686678389/resourceGroups/MC_iot_aks_northeurope/providers/Microsoft.Network/publicIPAddresses/1d7d9590-4922-46a0-a97b-757074ecc0f1"
+                "id": "/subscriptions/62cba975-9596-4b65-a542-cf23fc36d81f/resourceGroups/MC_iot_aks2_centralus/providers/Microsoft.Network/publicIPAddresses/7726d092-715c-497b-b62b-4e180317f50b"
               }
             ]
           },
-          "podCidr": "10.244.0.0/16",
           "serviceCidr": "10.0.0.0/16",
           "dnsServiceIP": "10.0.0.10",
           "dockerBridgeCidr": "172.17.0.1/16",
@@ -87,9 +91,9 @@
         },
         "identityProfile": {
           "kubeletidentity": {
-            "resourceId": "/subscriptions/cfbe1138-2a80-4e50-8e6b-9dd686678389/resourcegroups/MC_iot_aks_northeurope/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks-agentpool",
-            "clientId": "0e225eeb-cc41-4331-9ece-47685803c020",
-            "objectId": "7e100c6a-5d53-4532-8baf-f30991fe9bb2"
+            "resourceId": "/subscriptions/62cba975-9596-4b65-a542-cf23fc36d81f/resourcegroups/MC_iot_aks2_centralus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks2-agentpool",
+            "clientId": "e5f5ef1d-2b83-4d56-9857-79f37af601f8",
+            "objectId": "537519d3-d76d-4f42-8f70-b793329b7170"
           }
         }
       }
@@ -97,9 +101,9 @@
     {
       "type": "Microsoft.ContainerService/managedClusters/agentPools",
       "apiVersion": "2021-10-01",
-      "name": "aks/agentpool",
+      "name": "aks2/agentpool",
       "dependsOn": [
-        "[resourceId('Microsoft.ContainerService/managedClusters', 'aks')]"
+        "[resourceId('Microsoft.ContainerService/managedClusters', 'aks2')]"
       ],
       "properties": {
         "count": 1,
@@ -107,6 +111,7 @@
         "osDiskSizeGB": 128,
         "osDiskType": "Managed",
         "kubeletDiskType": "OS",
+        "vnetSubnetID": "/subscriptions/62cba975-9596-4b65-a542-cf23fc36d81f/resourceGroups/iot/providers/Microsoft.Network/virtualNetworks/iot-vnet/subnets/default",
         "maxPods": 110,
         "type": "VirtualMachineScaleSets",
         "enableAutoScaling": false,
